@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #0a0a0a; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.login {
+  width: 450px;
+  padding: 40px;
+  background: rgba(34, 34, 34, 0.8); 
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px 0 rgba(0, 255, 85, 0.2);
+}
+
+h2 {
+  color: #80c904; 
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 15px;
+  background-color: transparent;
+  border: 1px solid #80c904;
+  border-radius: 10px;
+  color: #fff;
+  outline: none;
+  font-size: 14px;
+}
+
+input::placeholder {
+  color: #b3b3b3;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: #80c904;
+  border: none;
+  border-radius: 10px;
+  color: #121212;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #a2e302;
+  transform: translateY(-2px);
+}
+
+.google-btn, .phone-btn {
+  background-color: transparent;
+  border: 1px solid #80c904;
+  color: #80c904;
+  padding: 12px;
+  width: 100%;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.google-btn:hover, .phone-btn:hover {
+  background-color: #80c904;
+  color: #121212;
+}
+
+a {
+  text-align: center;
+  display: block;
+  color: #80c904;
+  margin-top: 15px;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+a:hover {
+  text-decoration: underline;
+}

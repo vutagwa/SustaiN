@@ -1,17 +1,33 @@
-// Import the functions you need from the SDKs you need
+// Import Firebase SDKs
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, getDocs, serverTimestamp } from "firebase/firestore";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { 
+  getAuth, 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
+  GoogleAuthProvider, 
+  signInWithPopup, 
+  signInWithPhoneNumber, 
+  RecaptchaVerifier, 
+  updateProfile 
+} from "firebase/auth";
+import { 
+  getFirestore, 
+  collection, 
+  addDoc, 
+  getDoc, 
+  getDocs, 
+  serverTimestamp, 
+  doc, 
+  setDoc, 
+  updateDoc 
+} from "firebase/firestore";
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// Firebase Config
 const firebaseConfig = {
   apiKey: "AIzaSyDaKcX2flj4dccXkbqWXPsjY_KZq5x5Mzs",
   authDomain: "finalyear-7d80d.firebaseapp.com",
   projectId: "finalyear-7d80d",
-  storageBucket: "finalyear-7d80d.firebasestorage.app",
+  storageBucket: "finalyear-7d80d.appspot.com",
   messagingSenderId: "1015012666511",
   appId: "1:1015012666511:web:4439e1315f7ea561c554fa",
   measurementId: "G-TWEYGD5X8Q"
@@ -19,6 +35,28 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const db = getFirestore(app);
+const googleProvider = new GoogleAuthProvider();
 
-export { db, collection, addDoc, getDocs, serverTimestamp };
+// Export Modules
+export { 
+  app,
+  auth,
+  db,
+  googleProvider,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signInWithPhoneNumber,
+  RecaptchaVerifier,
+  collection,
+  addDoc,
+  getDoc,
+  getDocs,
+  serverTimestamp,
+  doc,
+  setDoc,
+  updateDoc,
+  updateProfile
+};

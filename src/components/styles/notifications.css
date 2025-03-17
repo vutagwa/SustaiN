@@ -1,0 +1,26 @@
+.notifications-container {
+    padding: 20px;
+  }
+  
+  .notification-item {
+    background-color: #f0f0f0;
+    color: #e0c4c4;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 8px;
+  }
+  
+  .unread {
+    background-color: #e1f5fe;
+  }
+  
+  .read {
+    background-color: #e0e0e0;
+  }
+  
+  button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  

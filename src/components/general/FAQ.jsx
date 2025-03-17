@@ -47,7 +47,7 @@ const FAQ = () => {
       <div className="faq-section">
         {faqs.map((faq, index) => (
           <p key={index}>{faq.question}</p>
-        ))}
+        ))} 
       </div>
 
       <h2>Ask a Question</h2>

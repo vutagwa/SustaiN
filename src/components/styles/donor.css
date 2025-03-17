@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  background-color: #121212;
+  color: #80c904;
+  padding: 20px;
+  position: fixed;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+ul li {
+  margin-bottom: 20px;
+}
+
+ul li a {
+  text-decoration: none;
+  color: #b3b3b3;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+ul li a:hover {
+  color: #80c904;
+  transform: translateX(5px);
+}
+
+.logout {
+  margin-top: 50px;
+}
+
+.logout a {
+  color: red;
+}
+
+.logout a:hover {
+  color: #ff4747;
+}
+.donor-dashboard {
+    display: flex;
+  }
+  
+  .content {
+    margin-left: 250px; /* Sidebar width */
+    padding: 40px;
+    width: 100%;
+    color: white;
+    background-color: #0a0a0a;
+    min-height: 100vh;
+  }
+  
