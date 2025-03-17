@@ -28,6 +28,23 @@ const Register = () => {
 
   // ✅ Register with Email & Password
   const handleRegisterWithEmail = async (e) => {
+    const donorId = user.uid; // Get Firebase Auth UID
+
+  const donorData = {
+    full_name: "John Doe", // Change to actual user input
+    email: user.email,
+    phone_number: "+254712345678", // Change to actual user input
+    role: "donor", 
+    createdAt: serverTimestamp(),
+  };
+
+  try {
+    await setDoc(doc(db, 'donors', donorId), donorData); // ✅ Save donor info in Firestore
+    console.log("Donor profile created ✅");
+  } catch (error) {
+    console.error("Error saving donor profile:", error);
+  }
+    
     e.preventDefault();
     if (password !== confirmPassword) {
       alert("Passwords do not match!");

@@ -16,60 +16,67 @@ const InventoryManagement = () => {
   const [donorId, setDonorId] = useState('');
 
   // ✅ Get Donor ID on Auth
+  const fetchDonorId = async (userId) => {
+    const donorRef = doc(db, 'donors', userId);
+    const donorSnap = await getDoc(donorRef);
+
+    if (donorSnap.exists()) {
+      setDonorId(userId);
+      console.log("Fetched donor ID:", userId);
+    } else {
+      console.warn("Donor ID not found in Firestore!");
+    }
+  };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) setDonorId(user.uid);
+      if (user) {
+        fetchDonorId(user.uid);
+      }
     });
     return () => unsubscribe();
   }, []);
 
   // ✅ Fetch Donor's Inventory in Real-time
-  const fetchFoodItems = async () => {
-    const q = query(collection(db, 'food_inventory'), where('donor_id', '==', donorId));
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setFoodItems(items);
-    });
-    return unsubscribe;
-  };
-
   useEffect(() => {
-    if (donorId) fetchFoodItems();
+    if (donorId) {
+      const q = query(collection(db, 'food_inventory'), where('donor_id', '==', donorId));
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setFoodItems(items);
+      });
+      return () => unsubscribe();
+    }
   }, [donorId]);
 
   // ✅ Handle Add or Edit Food Item
   const handleAddFood = async (e) => {
     e.preventDefault();
-
+    if (!donorId) {
+      console.error("Donor ID is missing! Food item cannot be added.");
+      return;
+    }
+    
     let photoUrl = '';
-
-    // ✅ Upload to Firebase Storage
     if (photo) {
       const storageRef = ref(storage, `food_photos/${donorId}/${photo.name}`);
       const snapshot = await uploadBytes(storageRef, photo);
       photoUrl = await getDownloadURL(snapshot.ref);
     }
-
+    
     const foodData = {
       food_name: foodName,
       quantity: parseInt(quantity),
-      expiry_date: new Date(expiryDate),
+      expiry_date: new Date(expiryDate).getTime(),
       photo_url: photoUrl,
-      pickup_schedule: new Date(pickupSchedule),
+      pickup_schedule: new Date(pickupSchedule).getTime(),
       donor_id: donorId,
-      status: 'available',  
+      status: 'available',
       createdAt: serverTimestamp()
     };
-
-    if (editingId) {
-      const foodRef = doc(db, 'food_inventory', editingId);
-      await updateDoc(foodRef, foodData);
-      setEditingId(null);
-    } else {
-      // ✅ Add to Firestore
+    
+    try {
       await addDoc(collection(db, 'food_inventory'), foodData);
-
-      // ✅ Trigger Notification to Recipients
       await addDoc(collection(db, 'notifications'), {
         message: 'New food donation available in your area.',
         userId: donorId,
@@ -77,23 +84,38 @@ const InventoryManagement = () => {
         read: false,
         createdAt: serverTimestamp()
       });
+      resetForm();
+    } catch (error) {
+      console.error("Error adding food:", error);
     }
-
-    resetForm();
   };
 
   // ✅ Handle Edit Food
   const handleEdit = (item) => {
     setFoodName(item.food_name);
     setQuantity(item.quantity);
-    setExpiryDate(item.expiry_date.toDate().toISOString().split('T')[0]);
-    setPickupSchedule(item.pickup_schedule.toDate().toISOString());
+    setExpiryDate(new Date(item.expiry_date).toISOString().split('T')[0]);
+    setPickupSchedule(new Date(item.pickup_schedule).toISOString());
     setEditingId(item.id);
   };
 
   // ✅ Handle Delete Food
   const handleDelete = async (id) => {
     await deleteDoc(doc(db, 'food_inventory', id));
+  };
+
+  // ✅ Mark Food as Unavailable
+  const markAsUnavailable = async (itemId) => {
+    try {
+      const itemRef = doc(db, "food_inventory", itemId);
+      await updateDoc(itemRef, { status: "unavailable", updatedAt: new Date() });
+      setFoodItems((prev) => prev.map(item => 
+        item.id === itemId ? { ...item, status: "unavailable" } : item
+      ));
+      alert("Item marked as unavailable!");
+    } catch (error) {
+      console.error("Error updating status:", error);
+    }
   };
 
   // ✅ Reset Form After Adding or Editing
@@ -109,8 +131,6 @@ const InventoryManagement = () => {
   return (
     <div className="inventory-management">
       <h2>Manage Your Food Inventory</h2>
-
-      {/* ✅ Add Food Form */}
       <form onSubmit={handleAddFood} className="food-form">
         <input type="text" placeholder="Food Name" value={foodName} onChange={(e) => setFoodName(e.target.value)} required />
         <input type="number" placeholder="Quantity" value={quantity} onChange={(e) => setQuantity(e.target.value)} required />
@@ -126,11 +146,13 @@ const InventoryManagement = () => {
           <div key={item.id} className="food-item">
             <h4>{item.food_name}</h4>
             <p>Quantity: {item.quantity}</p>
-            <p>Expiry: {new Date(item.expiry_date.toDate()).toDateString()}</p>
-            <p>Pickup: {new Date(item.pickup_schedule.toDate()).toLocaleString()}</p>
+            <p>Status: {item.status}</p>
+            <p>Expiry: {new Date(item.expiry_date).toDateString()}</p>
+            <p>Pickup: {new Date(item.pickup_schedule).toLocaleString()}</p>
             {item.photo_url && <img src={item.photo_url} alt="Food" className="food-image" />}
             <button onClick={() => handleEdit(item)}>Edit</button>
             <button onClick={() => handleDelete(item.id)}>Delete</button>
+            <button onClick={() => markAsUnavailable(item.id)}>Mark as Unavailable</button>
           </div>
         ))}
       </div>
