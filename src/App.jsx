@@ -1,4 +1,5 @@
 import DonorDashboard from "./components/donor/donorDashboard";
+import InventoryManagement from "./components/donor/InventoryManagement";
 import FAQ from "./components/general/FAQ";
 import Login from "./components/general/login";
 import Notifications from "./components/general/notifications";
@@ -8,7 +9,7 @@ import Settings from "./components/general/settings";
 function App() {
   return (
     <div>
-      <DonorDashboard />
+      <InventoryManagement />
     </div>
   );
 }

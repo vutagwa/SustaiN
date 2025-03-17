@@ -21,6 +21,7 @@ import {
   setDoc, 
   updateDoc 
 } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 // Firebase Config
 const firebaseConfig = {
@@ -38,6 +39,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const googleProvider = new GoogleAuthProvider();
+const storage = getStorage(app);
 
 // Export Modules
 export { 
@@ -58,5 +60,6 @@ export {
   doc,
   setDoc,
   updateDoc,
-  updateProfile
+  updateProfile,
+  storage,
 };

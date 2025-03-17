@@ -1,0 +1,123 @@
+/* 🌚 Dark UI Theme for Inventory Management */
+
+.inventory-management {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+    background-color: #121212;
+    color: #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.1);
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #00ff57;
+  }
+  
+  /* ✅ Form Styling */
+  .food-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+  }
+  
+  .food-form input {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    padding: 10px;
+    border: 1px solid #333;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .food-form input:focus {
+    border-color: #00ff57;
+  }
+  
+  .food-form button {
+    background-color: #00ff57;
+    color: #121212;
+    font-weight: bold;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .food-form button:hover {
+    background-color: #00cc44;
+  }
+  
+  /* ✅ Food Inventory List */
+  .food-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  /* ✅ Individual Food Item Card */
+  .food-item {
+    background-color: #1e1e1e;
+    padding: 15px 20px;
+    border-radius: 10px;
+    border-left: 5px solid #00ff57;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: 0 4px 10px rgba(0, 255, 0, 0.1);
+  }
+  
+  .food-item h4 {
+    color: #00ff57;
+    margin-bottom: 8px;
+  }
+  
+  .food-item p {
+    font-size: 14px;
+    opacity: 0.8;
+  }
+  
+  .food-image {
+    max-width: 100px;
+    height: auto;
+    border-radius: 8px;
+    margin-top: 8px;
+  }
+  
+  button {
+    padding: 8px 12px;
+    margin-right: 8px;
+    background-color: #00ff57;
+    color: #121212;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  button:hover {
+    background-color: #00cc44;
+  }
+  
+  button:nth-child(2) {
+    background-color: #ff3333;
+  }
+  
+  button:nth-child(2):hover {
+    background-color: #cc0000;
+  }
+  
+  /* ✅ Responsive for Mobile */
+  @media (max-width: 768px) {
+    .food-item {
+      flex-direction: column;
+      gap: 10px;
+    }
+  }
+  
