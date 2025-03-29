@@ -200,7 +200,7 @@ const Register = () => {
       </button>
 
       <p>
-        <Link to="/login">Already have an account? </Link>
+        <Link to="/">Already have an account? </Link>
       </p>
     </div>
   );

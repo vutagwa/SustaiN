@@ -43,7 +43,9 @@ input, select {
   font-size: 14px;
   transition: all 0.3s ease-in-out;
 }
-
+select{
+  color: #585757;
+}
 input::placeholder {
   color: #b3b3b3;
 }

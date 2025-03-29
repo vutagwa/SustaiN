@@ -1,5 +1,6 @@
 // Import Firebase SDKs
 import { initializeApp } from "firebase/app";
+import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import { 
   getAuth, 
   createUserWithEmailAndPassword, 
@@ -21,7 +22,7 @@ import {
   setDoc, 
   updateDoc 
 } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
+import { getStorage } from "firebase/storage"
 
 // Firebase Config
 const firebaseConfig = {
@@ -40,8 +41,20 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const googleProvider = new GoogleAuthProvider();
 const storage = getStorage(app);
+const messaging = getMessaging(app);
 
 // Export Modules
+export const requestNotificationPermission = async () => {
+  const permission = await Notification.requestPermission();
+  if (permission === "granted") {
+    const token = await getToken(messaging, { vapidKey: "YOUR_VAPID_KEY" });
+    console.log("FCM Token:", token);
+  }
+};
+
+onMessage(messaging, (payload) => {
+  console.log("New Notification:", payload);
+});
 export { 
   app,
   auth,

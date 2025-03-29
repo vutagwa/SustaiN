@@ -1,12 +1,33 @@
 import DonorSidebar from '../../components/donor/DonorSidebar';
 import '../styles/donor.css';
 import { FaBell } from 'react-icons/fa';
-
+import { doc, updateDoc, addDoc, collection, Timestamp } from "firebase/firestore";
+import { db } from "../essentials/firebase";
 const DonorDashboard = () => {
   const handleNotificationClick = () => {
     window.location.href = '/notifications';
   };
-
+  
+  
+  const approveRequest = async (requestId, recipientId) => {
+    try {
+      const requestRef = doc(db, "requests", requestId);
+      await updateDoc(requestRef, { status: "approved" });
+  
+      await addDoc(collection(db, "notifications"), {
+        userId: recipientId,
+        message: "Your food request has been approved!",
+        type: "request_approved",
+        read: false,
+        createdAt: Timestamp.now(),
+      });
+  
+      alert("Request approved and recipient notified!");
+    } catch (error) {
+      console.error("Error approving request: ", error);
+    }
+  };
+  
   return (
     <div className="donor-dashboard">
       <DonorSidebar />

@@ -1,0 +1,43 @@
+/* styles/theme.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f8ff; /* Light background */
+    color: #333; /* Dark text for readability */
+}
+
+h2, h3, h4 {
+    color: #2e8b57; /* Green color for headings */
+}
+
+.sidebar {
+    background-color: #e0f7fa; /* Light teal for sidebar */
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.content {
+    padding: 20px;
+    margin-left: 20px;
+    border-radius: 8px;
+    background-color: #ffffff; /* White background for content */
+}
+
+.button {
+    background-color: #2e8b57; /* Green button */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #1c5e3a; /* Darker green on hover */
+}
+
+.food-item, .donation-card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+}
