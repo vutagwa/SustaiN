@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as tf from "@tensorflow/tfjs";
 import { collection, getDocs } from "firebase/firestore";
-import { db } from "../../firebase";
+import { db } from "../essentials/firebase";
 
 const DonationMatching = () => {
   const [matches, setMatches] = useState([]);

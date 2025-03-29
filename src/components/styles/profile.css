@@ -1,0 +1,90 @@
+.donor-profile {
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+    background: #222;
+    color: #fff;
+    border-radius: 10px;
+  }
+  
+  h2 {
+    text-align: center;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  label {
+    margin-top: 10px;
+  }
+  
+  input {
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #555;
+    border-radius: 5px;
+    background: #333;
+    color: #fff;
+  }
+  
+  button {
+    background: #4CAF50;
+    color: white;
+    padding: 10px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background: #45a049;
+  }
+  
+  .profile-photo {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  
+  .photo-container {
+    position: relative;
+  }
+  
+  .photo-preview {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+  }
+  
+  .remove-photo-btn {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    background: red;
+    color: white;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 50%;
+  }
+  
+  .upload-box {
+    background: #444;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+  }
+  
+  .upload-box:hover {
+    background: #555;
+  }
+  
+  .error {
+    color: red;
+    font-size: 12px;
+    margin-left: 10px;
+  }
+  

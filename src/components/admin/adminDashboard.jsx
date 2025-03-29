@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
-import { db } from "../../firebase";
+import { db } from "../essentials/firebase";
+import { Link } from "react-router-dom";
+import "../styles/AdminDashboard.css"; // Import Styles
 
 const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
@@ -21,33 +23,52 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div>
-      <h2>Admin Panel</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Role</th>
-            <th>Approval</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user) => (
-            <tr key={user.id}>
-              <td>{user.fullName}</td>
-              <td>{user.role}</td>
-              <td>
-                {user.role === "recipient" && !user.approved ? (
-                  <button onClick={() => approveRecipient(user.id)}>Approve</button>
-                ) : (
-                  "Approved"
-                )}
-              </td>
+    <div className="admin-container">
+      {/* Sidebar Navigation */}
+      <div className="sidebar">
+        <h2>Admin Panel</h2>
+        <ul>
+          <li><Link to="/admin/dashboard">Dashboard</Link></li>
+          <li><Link to="/admin/reports">Reports</Link></li>
+          <li><Link to="/admin/analytics">Analytics</Link></li>
+          <li><Link to="/admin/matching">Donation Matching</Link></li>
+          <li><Link to="/admin/forecast">Food Forecast</Link></li>
+          <li><Link to="/admin/faq">FAQ</Link></li>
+          <li><Link to="/admin/settings">Settings</Link></li>
+          <li className="logout"><Link to="/logout">Logout</Link></li>
+        </ul>
+      </div>
+
+      {/* Main Dashboard Content */}
+      <div className="admin-content">
+        <h2>Admin Dashboard</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Role</th>
+              <th>Approval</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-      <li><Link to="/admin/reports">Reports</Link></li>
+          </thead>
+          <tbody>
+            {users.map((user) => (
+              <tr key={user.id}>
+                <td>{user.fullName}</td>
+                <td>{user.role}</td>
+                <td>
+                  {user.role === "recipient" && !user.approved ? (
+                    <button onClick={() => approveRecipient(user.id)} className="approve-btn">
+                      Approve
+                    </button>
+                  ) : (
+                    <span className="approved-text">Approved</span>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

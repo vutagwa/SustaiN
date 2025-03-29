@@ -1,0 +1,95 @@
+/* Admin Dashboard Container */
+.admin-container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  /* Sidebar Navigation */
+  .sidebar {
+    width: 250px;
+    background: #222;
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  .sidebar h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .sidebar ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .sidebar ul li {
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 5px;
+    text-align: center;
+  }
+  
+  .sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    display: block;
+  }
+  
+  .sidebar ul li:hover {
+    background: #444;
+    transition: 0.3s ease;
+  }
+  
+  .sidebar .logout {
+    margin-top: auto;
+    background: red;
+  }
+  
+  .sidebar .logout:hover {
+    background: darkred;
+  }
+  
+  /* Main Content */
+  .admin-content {
+    flex: 1;
+    padding: 20px;
+    background: #f5f5f5;
+  }
+  
+  .admin-content h2 {
+    margin-bottom: 20px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+  }
+  
+  table th, table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: center;
+    color: #686464
+  }
+  
+  .approve-btn {
+    background: green;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .approve-btn:hover {
+    background: darkgreen;
+  }
+  
+  .approved-text {
+    color: green;
+    font-weight: bold;
+  }
+  

@@ -1,8 +1,0 @@
-useEffect(() => {
-  const fetchRecipients = async () => {
-    const querySnapshot = await getDocs(collection(db, "recipients"));
-    const recipientsList = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    setRecipients(recipientsList);
-  };
-  fetchRecipients();
-}, []);

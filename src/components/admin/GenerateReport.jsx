@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { collection, getDocs } from "firebase/firestore";
-import { db } from "../../firebase";
+import { db } from "../essentials/firebase";
 import { Document, Page, Text, View, PDFDownloadLink, StyleSheet } from "@react-pdf/renderer";
 
 const styles = StyleSheet.create({
