@@ -1,29 +1,6 @@
 .dashboard-container {
     display: flex;
   }
-  
-  .sidebar {
-    width: 250px;
-    background: #2c3e50;
-    color: white;
-    height: 100vh;
-    padding: 20px;
-  }
-  
-  .sidebar ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .sidebar ul li {
-    margin: 15px 0;
-  }
-  
-  .sidebar ul li a {
-    color: white;
-    text-decoration: none;
-  }
-  
   .content {
     flex-grow: 1;
     padding: 20px;
@@ -81,4 +58,56 @@
       font-size: 14px;
     }
   }
-  
+  /* Floating Chat Button */
+.chat-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #388E3C; /* Dark Green */
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s ease-in-out;
+}
+
+.chat-button img {
+  width: 30px;
+  height: 30px;
+  filter: invert(1);
+}
+
+.chat-button:hover {
+  background-color: #2E7D32; /* Slightly darker green */
+}
+
+/* Chat Window */
+.chat-container {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 320px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+}
+
+.login-message {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  background: #E65100; /* Deep Orange */
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}

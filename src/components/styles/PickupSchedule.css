@@ -1,0 +1,78 @@
+/* General Page Layout */
+.pickup-page {
+    display: flex;
+    min-height: 100vh;
+    background: linear-gradient(to right, #ffebee, #e8f5e9); /* Light Pink & Green */
+  }
+  
+  /* Sidebar */
+  
+  /* Main Content Layout */
+  .main-content {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  /* Pickup Schedule Section */
+  .pickup-schedule {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .pickup-schedule h2 {
+    color: #388e3c; /* Green */
+  }
+  
+  .pickup-card {
+    background: #f8bbd0; /* Light Pink */
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .pickup-card p {
+    margin: 5px 0;
+  }
+  
+  .no-pickups {
+    color: #d81b60; /* Dark Pink */
+    font-weight: bold;
+  }
+  
+  /* Pickup Map Section */
+  .pickup-map {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .pickup-map h2 {
+    color: #d81b60; /* Dark Pink */
+  }
+  
+  /* Mobile Responsive */
+  @media (max-width: 768px) {
+    .pickup-page {
+      flex-direction: column;
+    }
+  
+    .sidebar {
+      width: 100%;
+      height: auto;
+      text-align: center;
+    }
+  
+    .main-content {
+      padding: 10px;
+    }
+  
+    .pickup-map {
+      margin-top: 10px;
+    }
+  }
+  

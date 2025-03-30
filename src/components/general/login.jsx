@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { auth, db } from "../essentials/firebase";
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, signInWithPhoneNumber, RecaptchaVerifier } from "firebase/auth";
-import { collection, getDoc, doc } from "firebase/firestore";
-import { useNavigate, Link } from "react-router-dom"; // Import Link for navigation
-import '../styles/login.css';
+import { auth, db, googleProvider } from "../essentials/firebase";
+import {
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signInWithPhoneNumber,
+  RecaptchaVerifier,
+  PhoneAuthProvider,
+} from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+import { useNavigate, Link } from "react-router-dom";
+import "../styles/login.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -16,36 +22,49 @@ const Login = () => {
 
   useEffect(() => {
     if (!window.recaptchaVerifier) {
-      window.recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", { size: "invisible" });
+      window.recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {
+        size: "invisible",
+        callback: () => console.log("reCAPTCHA verified ✅"),
+      });
     }
   }, []);
 
   const handleEmailLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
+  
     try {
+      // 1️⃣ Authenticate user
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-
+  
+      // 2️⃣ Fetch user details from Firestore
       const userDoc = await getDoc(doc(db, "users", user.uid));
+  
       if (userDoc.exists()) {
         const userData = userDoc.data();
+        
+        // 3️⃣ Store role in localStorage for Role-Based Access
         localStorage.setItem("userRole", userData.role);
+  
+        // 4️⃣ Navigate to the correct dashboard
         navigateDashboard(userData.role);
       } else {
-        alert("User not found!");
+        alert("User not found in Firestore!");
       }
     } catch (error) {
+      console.error("Login Error:", error);
       alert(error.message);
     }
+  
     setLoading(false);
   };
+  
 
   const handleGoogleLogin = async () => {
     setLoading(true);
     try {
-      const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
 
       const userDoc = await getDoc(doc(db, "users", user.uid));
@@ -57,7 +76,7 @@ const Login = () => {
         alert("User not found!");
       }
     } catch (error) {
-      alert(error.message);
+      console.error("Google login error:", error);
     }
     setLoading(false);
   };
@@ -68,6 +87,7 @@ const Login = () => {
       const confirmationResult = await signInWithPhoneNumber(auth, phone, window.recaptchaVerifier);
       setVerificationId(confirmationResult.verificationId);
     } catch (error) {
+      console.error("Phone login error:", error);
       alert(error.message);
     }
     setLoading(false);
@@ -76,7 +96,7 @@ const Login = () => {
   const handleVerifyOtp = async () => {
     setLoading(true);
     try {
-      const credential = auth.PhoneAuthProvider.credential(verificationId, otp);
+      const credential = PhoneAuthProvider.credential(verificationId, otp);
       const userCredential = await auth.signInWithCredential(credential);
       const user = userCredential.user;
 
@@ -89,7 +109,7 @@ const Login = () => {
         alert("User not found!");
       }
     } catch (error) {
-      alert(error.message);
+      console.error("OTP verification error:", error);
     }
     setLoading(false);
   };
@@ -97,21 +117,21 @@ const Login = () => {
   const navigateDashboard = (role) => {
     switch (role) {
       case "donor":
-        navigate("/donor-dashboard");
+        navigate("/donor/dashboard");
         break;
       case "recipient":
-        navigate("/recipient-dashboard");
+        navigate("recipient/dashboard");
         break;
       case "delivery_agent":
-        navigate("/agent-dashboard");
+        navigate("/delivery/dashboard");
         break;
       default:
-        navigate("/dashboard");
+        navigate("/admin/dashboard");
     }
   };
 
   return (
-    <div>
+    <div className="login-container">
       <h2>Login</h2>
       <form onSubmit={handleEmailLogin}>
         <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
@@ -128,9 +148,7 @@ const Login = () => {
 
       <div id="recaptcha-container"></div>
 
-      <p>
-        <Link to="/register">Don't have an account? </Link>
-      </p>
+      <p><Link to="/register">Don't have an account?</Link></p>
     </div>
   );
 };

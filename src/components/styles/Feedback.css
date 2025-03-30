@@ -1,0 +1,88 @@
+/* General Page Layout */
+.feedback-page {
+    display: flex;
+    height: 100vh;
+    background: linear-gradient(to right, #ffebee, #e8f5e9); /* Light pink & green */
+  }
+  
+  /* Sidebar Navigation */
+  .sidebar {
+    width: 250px;
+    background: #ff80ab; /* Soft pink */
+    padding: 20px;
+    color: white;
+    min-height: 100vh;
+  }
+  
+  .sidebar h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar ul li {
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    transition: background 0.3s;
+  }
+  
+  .sidebar ul li a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    display: block;
+  }
+  
+  .sidebar ul li:hover {
+    background: #d81b60; /* Darker pink */
+  }
+  
+  /* Feedback Form */
+  .feedback-container {
+    flex: 1;
+    padding: 50px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    margin: auto;
+    width: 50%;
+    text-align: center;
+  }
+  
+  .feedback-container h2 {
+    color: #388e3c; /* Green */
+  }
+  
+  .feedback-container input,
+  .feedback-container select,
+  .feedback-container textarea {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .feedback-container textarea {
+    height: 100px;
+  }
+  
+  .feedback-container button {
+    background: #388e3c; /* Green */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+  }
+  
+  .feedback-container button:hover {
+    background: #2e7d32; /* Darker green */
+  }
+  

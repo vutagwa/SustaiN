@@ -5,11 +5,12 @@ import DonorDashboard from "./components/donor/DonorDashboard";
 import InventoryManagement from "./components/donor/InventoryManagement";
 import ScheduleDelivery from "./components/donor/SchedulePickup";
 import FAQ from "./components/general/FAQ";
-import Login from "./components/general/Login";
+import Login from "./components/general/login";
 import Notifications from "./components/general/Notifications";
 import Register from "./components/general/Register";
 import Settings from "./components/general/Settings";
-import RecipientDashboard from "./components/recipient/RecipientDashboard";
+import RecipientDashboard from "./components/recipient/recipientDashboard";
+import Notify from "./components/recipient/Notifications";
 import PickupSchedule from "./components/recipient/PickupSchedule";
 import TrackFood from "./components/recipient/TrackFood";
 import Feedback from "./components/recipient/Feedback";
@@ -31,7 +32,6 @@ const App = () => {
 
   return (
     <>
-        <Navbar />
         <Routes>
           {/* General Routes */}
           <Route path="/" element={<Login />} />
@@ -52,7 +52,7 @@ const App = () => {
           <Route path="/recipient/track" element={<TrackFood />} />
           <Route path="/recipient/feedback" element={<Feedback />} />
           <Route path="/recipient/auto-schedule" element={<AutoSchedule />} />
-
+          <Route path="/recipient/notifications" element={<Notify />} />
           {/* Admin Routes */}
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/reports" element={<Reports />} />

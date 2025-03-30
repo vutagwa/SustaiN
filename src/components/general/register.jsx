@@ -28,58 +28,48 @@ const Register = () => {
 
   // ✅ Register with Email & Password
   const handleRegisterWithEmail = async (e) => {
-    const donorId = user.uid; // Get Firebase Auth UID
-
-  const donorData = {
-    full_name: "John Doe", // Change to actual user input
-    email: user.email,
-    phone_number: "+254712345678", // Change to actual user input
-    role: "donor", 
-    createdAt: serverTimestamp(),
-  };
-
-  try {
-    await setDoc(doc(db, 'donors', donorId), donorData); // ✅ Save donor info in Firestore
-    console.log("Donor profile created ✅");
-  } catch (error) {
-    console.error("Error saving donor profile:", error);
-  }
-    
     e.preventDefault();
+    setLoading(true);
+  
     if (password !== confirmPassword) {
       alert("Passwords do not match!");
+      setLoading(false);
       return;
     }
-
+  
     try {
+      // 1️⃣ Create user with Firebase Authentication
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-
-      // Update User Profile with Full Name
+  
+      // 2️⃣ Update User Profile
       await updateProfile(user, { displayName: fullName });
-
-      // Store User Data in Firestore
-      await setDoc(doc(db, "users", user.uid), {
+  
+      // 3️⃣ Store user details in Firestore under 'users' collection
+      const userData = {
         fullName,
         username,
         email,
         phoneNumber,
         role,
         uid: user.uid,
-        createdAt: new Date()
-      });
-
-      // Store Role in Local Storage for Role-Based Access Control
+        createdAt: new Date(),
+      };
+  
+      await setDoc(doc(db, "users", user.uid), userData);
+  
+      // 4️⃣ Store role in localStorage for Role-Based Access
       localStorage.setItem("userRole", role);
-
-      // Redirect Based on Role
+  
+      // 5️⃣ Redirect based on role
       redirectBasedOnRole(role);
-
     } catch (error) {
       console.error("Error registering user:", error);
       alert(error.message);
     }
+    setLoading(false);
   };
+  
 
   // ✅ Register with Google
   const handleGoogleSignup = async () => {

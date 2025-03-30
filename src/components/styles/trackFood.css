@@ -1,0 +1,65 @@
+.track-page {
+    display: flex;
+  }
+  
+  .track-content {
+    flex: 1;
+    padding: 20px;
+    background: #f5f5f5;
+    min-height: 90vh;
+  }
+  
+  h2 {
+    color: #388E3C; /* ✅ Light Green Header for Sustainability */
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .food-card {
+    background: #C8E6C9; /* ✅ Light Green for an Eco-Friendly Look */
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    transition: background 0.3s, transform 0.2s;
+  }
+  
+  .food-card:hover {
+    background: #A5D6A7; /* Slightly Darker Green on Hover */
+    transform: scale(1.02);
+  }
+  
+  .food-card p {
+    font-size: 16px;
+    margin: 5px 0;
+  }
+  
+  .food-card p strong {
+    color: #E65100; /* ✅ Deep Orange to Highlight Important Details */
+  }
+  
+  .food-card p:hover {
+    color: #BF360C; /* ✅ Slightly Darker Orange on Hover */
+  }
+  
+  .no-food {
+    text-align: center;
+    color: #666;
+    font-size: 18px;
+    margin-top: 20px;
+  }
+  
+  /* ✅ Responsive Design */
+  @media (max-width: 768px) {
+    .track-page {
+      flex-direction: column;
+    }
+  
+    .track-content {
+      padding: 10px;
+    }
+  
+    .food-card {
+      padding: 10px;
+    }
+  }
+  
