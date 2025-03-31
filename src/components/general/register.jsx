@@ -13,6 +13,8 @@ import {
 } from "../essentials/firebase";
 import { useNavigate, Link } from "react-router-dom";
 import "../styles/registration.css";
+import googleIcon from "../../assets/Google.jpeg"; // Google logo
+import phoneIcon from "../../assets/phone.jpeg"; // Phone login icon
 
 const Register = () => {
   const [fullName, setFullName] = useState('');
@@ -58,10 +60,36 @@ const Register = () => {
   
       await setDoc(doc(db, "users", user.uid), userData);
   
-      // 4️⃣ Store role in localStorage for Role-Based Access
+      // 4️⃣ Store in respective collections based on role
+      if (role === "donor") {
+        await setDoc(doc(db, "donors", user.uid), {
+          fullName,
+          email,
+          phoneNumber,
+          username,
+          role,
+          organization: "",  // Add organization name field if needed
+          location: "",      // Add location field if needed
+          donationCount: 0,  // Initialize donation count
+          createdAt: new Date(),
+        });
+      } else if (role === "agent") {
+        await setDoc(doc(db, "agents", user.uid), {
+          fullName,
+          email,
+          phoneNumber,
+          username,
+          role,
+          assignedPickups: [], // Initialize as an empty array
+          completedDeliveries: 0,
+          createdAt: new Date(),
+        });
+      }
+  
+      // 5️⃣ Store role in localStorage for Role-Based Access
       localStorage.setItem("userRole", role);
   
-      // 5️⃣ Redirect based on role
+      // 6️⃣ Redirect based on role
       redirectBasedOnRole(role);
     } catch (error) {
       console.error("Error registering user:", error);
@@ -69,6 +97,7 @@ const Register = () => {
     }
     setLoading(false);
   };
+  
   
 
   // ✅ Register with Google
@@ -134,16 +163,16 @@ const Register = () => {
   const redirectBasedOnRole = (userRole) => {
     switch (userRole) {
       case "admin":
-        navigate("/admin-dashboard");
+        navigate("/admin/dashboard");
         break;
       case "donor":
-        navigate("/donor-dashboard");
+        navigate("/donor/dashboard");
         break;
       case "recipient":
-        navigate("/recipient-dashboard");
+        navigate("/recipient/dashboard");
         break;
       case "agent":
-        navigate("/agent-dashboard");
+        navigate("/delivery/dashboard");
         break;
       default:
         navigate("/login");
@@ -153,6 +182,7 @@ const Register = () => {
   return (
     <div className="register-page">
       <h2>Register</h2>
+      
       <form onSubmit={handleRegisterWithEmail}>
         <input type="text" placeholder="Full Name" onChange={(e) => setFullName(e.target.value)} required />
         <input type="text" placeholder="Username" onChange={(e) => setUsername(e.target.value)} required />
@@ -169,25 +199,21 @@ const Register = () => {
         <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} required />
         <input type="password" placeholder="Confirm Password" onChange={(e) => setConfirmPassword(e.target.value)} required />
 
-        <button type="submit" disabled={loading}>
+        <button class="email-reg" type="submit" disabled={loading}>
           Register with Email
         </button>
       </form>
 
+      <div className="register-options">
       <button className="google-btn" onClick={handleGoogleSignup}>
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 48 48">
-          <path fill="#4285F4" d="M24 9.5c3.89 0 7.02 1.43 9.42 3.73l6.99-6.99C35.92 2.39 30.23 0 24 0 14.58 0 6.73 5.44 2.73 13.44l7.74 6c1.65-4.92 6.33-8.44 13.53-8.44z"/>
-          <path fill="#34A853" d="M46.09 24.5c0-1.32-.11-2.63-.32-3.89H24v7.38h12.6c-.79 3.9-3.18 7.2-6.65 9.2l7.74 6c4.53-4.18 7.4-10.34 7.4-17.69z"/>
-          <path fill="#FBBC05" d="M10.47 28.06C9.39 25.74 8.75 23.19 8.75 20.5s.64-5.24 1.72-7.56l-7.74-6C.64 11.26 0 15.74 0 20.5c0 4.76.64 9.24 2.73 13.56l7.74-6z"/>
-          <path fill="#EA4335" d="M24 48c6.23 0 11.92-2.39 16.41-6.24l-7.74-6c-2.01 1.3-4.51 2.06-8.67 2.06-7.2 0-11.88-3.52-13.53-8.44l-7.74 6C6.73 42.56 14.58 48 24 48z"/>
-        </svg>
-        Sign up with Google
+            <img src={googleIcon} alt="Google Logo" />
       </button>
 
       <div id="recaptcha-container"></div>
       <button className="phone-btn" onClick={handlePhoneSignup}>
-      📞Sign up with Phone Number
+            <img src={phoneIcon} alt="Phone Icon" />
       </button>
+      </div>
 
       <p>
         <Link to="/">Already have an account? </Link>

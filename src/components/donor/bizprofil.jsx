@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
-import { db, storage } from "../../essentials/firebase";
+import { db, storage } from "../essentials/firebase";
 import { getDownloadURL, ref, uploadBytes, deleteObject } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import "../styles/profile.css";
@@ -90,6 +90,8 @@ const DonorProfile = ({ userId }) => {
 
   return (
     <div className="donor-profile">
+            <DonorSidebar />
+
       <h2>👤 Donor Profile</h2>
       <form onSubmit={handleSubmit}>
         {/* Profile Photo Upload */}

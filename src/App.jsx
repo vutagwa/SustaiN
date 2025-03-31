@@ -23,6 +23,7 @@ import AdminAnalytics from "./components/admin/AdminAnalytics";
 import DonationMatching from "./components/admin/DonationMatching";
 import FoodForecast from "./components/admin/FoodForecast";
 import DeliveryDashboard from "./components/delivery agent/agentDashboard";
+import DonorProfile from "./components/donor/bizprofil"
 
 const App = () => {
   useEffect(() => {
@@ -45,6 +46,8 @@ const App = () => {
           <Route path="/donor/inventory" element={<InventoryManagement />} />
           <Route path="/donor/schedule" element={<ScheduleDelivery />} />
           <Route path="/donor/history" element={<DonationHistory />} />
+          <Route path="/donor/profile" element={<DonorProfile />} />
+
 
           {/* Recipient Routes */}
           <Route path="/recipient/dashboard" element={<RecipientDashboard />} />

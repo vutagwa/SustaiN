@@ -9,83 +9,131 @@ body {
   height: 100vh;
   margin: 0;
 }
-
-.login {
-  width: 450px;
-  padding: 40px;
-  background: rgba(34, 34, 34, 0.8); 
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  box-shadow: 0 8px 32px 0 rgba(0, 255, 85, 0.2);
+/* login.css */
+/* Full-page container */
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #bff5de, #222222); /* Dark gradient */
 }
 
-h2 {
-  color: #80c904; 
+/* Centered login box */
+.login-box {
+  width: 350px;
+  padding: 40px;
+  background: #181818;
+  border-radius: 12px;
   text-align: center;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Heading */
+.login-box h2 {
+  color: #ffffff;
   font-size: 24px;
-  font-weight: 600;
   margin-bottom: 20px;
 }
 
-input {
-  width: 100%;
-  padding: 14px;
-  margin-bottom: 15px;
-  background-color: transparent;
-  border: 1px solid #80c904;
-  border-radius: 10px;
-  color: #fff;
-  outline: none;
-  font-size: 14px;
-}
-
-input::placeholder {
-  color: #b3b3b3;
-}
-
-button {
+/* Input fields */
+.login-box input {
   width: 100%;
   padding: 12px;
-  background-color: #80c904;
-  border: none;
-  border-radius: 10px;
-  color: #121212;
-  font-weight: bold;
+  margin: 10px 0;
+  background: #252525;
+  border: 1px solid #444;
+  border-radius: 6px;
+  color: white;
+  font-size: 16px;
+}
+
+.login-box input::placeholder {
+  color: #888;
+}
+
+/* Login button */
+.login-box .email-login {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border: 1px solid #4CAF50;
+  background: transparent;
+  color: #4CAF50;
+  border-radius: 6px;
+  font-size: 16px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
-button:hover {
-  background-color: #a2e302;
-  transform: translateY(-2px);
+.login-box .email-login:hover {
+  background: #4CAF50;
+  color: white;
+}
+.login-options {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  background: transparent;
 }
 
-.google-btn, .phone-btn {
-  background-color: transparent;
-  border: 1px solid #80c904;
-  color: #80c904;
-  padding: 12px;
-  width: 100%;
-  margin-bottom: 10px;
-  border-radius: 10px;
-  transition: all 0.3s ease;
+.google-login, .phone-login {
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
-.google-btn:hover, .phone-btn:hover {
-  background-color: #80c904;
-  color: #121212;
+.google-login img, .phone-login img {
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
 }
 
-a {
-  text-align: center;
-  display: block;
-  color: #80c904;
-  margin-top: 15px;
-  text-decoration: none;
+.phone-login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.phone-login-form input {
+  width: 80%;
+  padding: 8px;
   font-size: 14px;
 }
 
-a:hover {
+.otp-login {
+  background-color: #ff9800;
+  color: white;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  width: 80%;
+}
+
+.otp-login:disabled {
+  background-color: #ccc;
+}
+/* Registration link */
+.login-box p {
+  margin-top: 15px;
+}
+
+.login-box a {
+  color: #4CAF50;
+  text-decoration: none;
+}
+
+.login-box a:hover {
   text-decoration: underline;
+}
+
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+  .login-box {
+    width: 90%;
+  }
 }

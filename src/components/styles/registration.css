@@ -2,152 +2,115 @@
 
 body {
   font-family: 'Poppins', sans-serif;
-  background-color: #0a0a0a; /* Deep dark background */
+  background-color: #0a0a0a; 
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  height: 100vh;
   margin: 0;
 }
 
-/* === Register Container === */
+/* Full-page container */
 .register-page {
-  width: 450px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #bff5de, #222222); /* Dark gradient */
+  width: 350px;
+  height: 100vh;
   padding: 40px;
-  background: rgba(34, 34, 34, 0.8); /* Glassmorphism effect */
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  box-shadow: 0 8px 32px 0 rgba(0, 255, 85, 0.2);
-  animation: fadeIn 0.5s ease-in-out;
+  background: #181818;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4);
+
 }
 
-h2 {
-  color: #80c904; /* Neon green */
-  text-align: center;
+
+/* Heading */
+.register-page h2 {
+  color: #d3b8b8;
   font-size: 24px;
-  font-weight: 600;
   margin-bottom: 20px;
 }
 
-/* === Input Fields === */
-input, select {
-  width: 100%;
-  padding: 14px;
-  margin-bottom: 15px;
-  background-color: transparent;
-  border: 1px solid #80c904;
-  border-radius: 10px;
-  color: #fff;
-  outline: none;
-  font-size: 14px;
-  transition: all 0.3s ease-in-out;
-}
-select{
-  color: #585757;
-}
-input::placeholder {
-  color: #b3b3b3;
-}
-
-input:focus, select:focus {
-  border-color: #a2e302;
-  box-shadow: 0 0 8px #80c904;
-}
-
-/* === Buttons === */
-button {
+/* Input fields */
+.register-page input,
+.register-page select {
   width: 100%;
   padding: 12px;
-  background-color: #80c904;
-  border: none;
-  border-radius: 10px;
-  color: #121212;
-  font-weight: bold;
+  margin: 10px 0;
+  background: #252525;
+  border: 1px solid #444;
+  border-radius: 6px;
+  color: white;
+  font-size: 16px;
+}
+
+.register-page input::placeholder {
+  color: #888;
+}
+
+/* Register button */
+.register-page .email-reg {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border: 1px solid #4CAF50;
+  background: transparent;
+  color: #4CAF50;
+  border-radius: 6px;
+  font-size: 16px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
-button:hover {
-  background-color: #a2e302;
-  transform: translateY(-2px);
+.register-page .email-reg:hover {
+  border-radius: none;
 }
 
-/* === Google & Phone Buttons === */
-.google-btn, .phone-btn {
-  background-color: transparent;
-  border: 1px solid #80c904;
-  color: #80c904;
-  padding: 12px;
-  width: 100%;
-  margin-bottom: 10px;
-  border-radius: 10px;
-  transition: all 0.3s ease;
+/* Registration options */
+.register-options {
   display: flex;
-  align-items: center;
   justify-content: center;
   gap: 10px;
+  margin-bottom: -30px;
+  background: transparent;
 }
 
-.google-btn:hover, .phone-btn:hover {
-  background-color: #80c904;
-  color: #121212;
+.google-btn,
+.phone-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
-/* === Link Section === */
-a {
-  text-align: center;
-  display: block;
-  color: #80c904;
+.google-btn img,
+.phone-btn img {
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
+}
+
+/* Registration link */
+.register-page p {
   margin-top: 15px;
+}
+
+.register-page a {
+  color: #4CAF50;
   text-decoration: none;
-  font-size: 14px;
 }
 
-a:hover {
+.register-page a:hover {
   text-decoration: underline;
 }
 
-.login-link {
-  margin-top: 20px;
-  text-align: center;
-  font-size: 14px;
-  color: #b3b3b3;
-}
-
-.login-link a {
-  color: #80c904;
-}
-
-.login-link a:hover {
-  text-decoration: underline;
-}
-
-/* === Phone Number Recaptcha === */
-#recaptcha-container {
-  margin-bottom: 15px;
-}
-
-/* === Animation for Smooth Load === */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* === Mobile Responsive === */
-@media (max-width: 768px) {
-  .register-page {
+/* Mobile Responsive */
+@media (max-width: 600px) {
+  .register-page form {
     width: 90%;
-    padding: 20px;
-  }
-
-  input, select, button {
-    padding: 12px;
   }
 }

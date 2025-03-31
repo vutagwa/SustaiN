@@ -1,23 +1,36 @@
-import { useState, useEffect } from 'react';
-import { collection, addDoc, getDocs, updateDoc, doc, deleteDoc, query, where, onSnapshot, serverTimestamp } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { auth, db, storage } from '../essentials/firebase';
-import { onAuthStateChanged } from 'firebase/auth';
-import '../styles/inventory.css';
+import { useState, useEffect } from "react";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  updateDoc,
+  doc,
+  deleteDoc,
+  query,
+  where,
+  onSnapshot,
+  serverTimestamp,
+  getDoc,
+} from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { auth, db, storage } from "../essentials/firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import "../styles/inventory.css";
+import DonorSidebar from "./DonorSidebar";
 
 const InventoryManagement = () => {
-  const [foodName, setFoodName] = useState('');
-  const [quantity, setQuantity] = useState('');
-  const [expiryDate, setExpiryDate] = useState('');
+  const [foodName, setFoodName] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [expiryDate, setExpiryDate] = useState("");
   const [photo, setPhoto] = useState(null);
-  const [pickupSchedule, setPickupSchedule] = useState('');
+  const [pickupSchedule, setPickupSchedule] = useState("");
   const [foodItems, setFoodItems] = useState([]);
   const [editingId, setEditingId] = useState(null);
-  const [donorId, setDonorId] = useState('');
+  const [donorId, setDonorId] = useState("");
 
-  // ✅ Get Donor ID on Auth
+  // ✅ Get Donor ID from Firestore
   const fetchDonorId = async (userId) => {
-    const donorRef = doc(db, 'donors', userId);
+    const donorRef = doc(db, "donors", userId);
     const donorSnap = await getDoc(donorRef);
 
     if (donorSnap.exists()) {
@@ -37,12 +50,12 @@ const InventoryManagement = () => {
     return () => unsubscribe();
   }, []);
 
-  // ✅ Fetch Donor's Inventory in Real-time
+  // ✅ Fetch Donor's Food Inventory in Real-Time
   useEffect(() => {
     if (donorId) {
-      const q = query(collection(db, 'food_inventory'), where('donor_id', '==', donorId));
+      const q = query(collection(db, "food_inventory"), where("donor_id", "==", donorId));
       const unsubscribe = onSnapshot(q, (snapshot) => {
-        const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const items = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
         setFoodItems(items);
       });
       return () => unsubscribe();
@@ -56,34 +69,45 @@ const InventoryManagement = () => {
       console.error("Donor ID is missing! Food item cannot be added.");
       return;
     }
-    
-    let photoUrl = '';
+
+    let photoUrl = "";
     if (photo) {
       const storageRef = ref(storage, `food_photos/${donorId}/${photo.name}`);
       const snapshot = await uploadBytes(storageRef, photo);
       photoUrl = await getDownloadURL(snapshot.ref);
     }
-    
+
     const foodData = {
       food_name: foodName,
       quantity: parseInt(quantity),
-      expiry_date: new Date(expiryDate).getTime(),
+      expiry_date: new Date(expiryDate), // Firestore Timestamp will be auto-converted
       photo_url: photoUrl,
-      pickup_schedule: new Date(pickupSchedule).getTime(),
+      pickup_schedule: new Date(pickupSchedule),
       donor_id: donorId,
-      status: 'available',
-      createdAt: serverTimestamp()
+      status: "available",
+      createdAt: serverTimestamp(),
     };
-    
+
     try {
-      await addDoc(collection(db, 'food_inventory'), foodData);
-      await addDoc(collection(db, 'notifications'), {
-        message: 'New food donation available in your area.',
+      if (editingId) {
+        // If Editing, Update the Existing Document
+        const itemRef = doc(db, "food_inventory", editingId);
+        await updateDoc(itemRef, foodData);
+        setEditingId(null);
+      } else {
+        // Otherwise, Add a New Food Entry
+        await addDoc(collection(db, "food_inventory"), foodData);
+      }
+
+      // ✅ Send Notification to Recipients
+      await addDoc(collection(db, "notifications"), {
+        message: "New food donation available in your area.",
         userId: donorId,
-        type: 'alert',
+        type: "alert",
         read: false,
-        createdAt: serverTimestamp()
+        createdAt: serverTimestamp(),
       });
+
       resetForm();
     } catch (error) {
       console.error("Error adding food:", error);
@@ -94,24 +118,24 @@ const InventoryManagement = () => {
   const handleEdit = (item) => {
     setFoodName(item.food_name);
     setQuantity(item.quantity);
-    setExpiryDate(new Date(item.expiry_date).toISOString().split('T')[0]);
-    setPickupSchedule(new Date(item.pickup_schedule).toISOString());
+    setExpiryDate(item.expiry_date ? new Date(item.expiry_date).toISOString().split("T")[0] : "");
+    setPickupSchedule(item.pickup_schedule ? new Date(item.pickup_schedule).toISOString() : "");
     setEditingId(item.id);
   };
 
   // ✅ Handle Delete Food
   const handleDelete = async (id) => {
-    await deleteDoc(doc(db, 'food_inventory', id));
+    await deleteDoc(doc(db, "food_inventory", id));
   };
 
   // ✅ Mark Food as Unavailable
   const markAsUnavailable = async (itemId) => {
     try {
       const itemRef = doc(db, "food_inventory", itemId);
-      await updateDoc(itemRef, { status: "unavailable", updatedAt: new Date() });
-      setFoodItems((prev) => prev.map(item => 
-        item.id === itemId ? { ...item, status: "unavailable" } : item
-      ));
+      await updateDoc(itemRef, { status: "unavailable", updatedAt: serverTimestamp() });
+      setFoodItems((prev) =>
+        prev.map((item) => (item.id === itemId ? { ...item, status: "unavailable" } : item))
+      );
       alert("Item marked as unavailable!");
     } catch (error) {
       console.error("Error updating status:", error);
@@ -120,16 +144,17 @@ const InventoryManagement = () => {
 
   // ✅ Reset Form After Adding or Editing
   const resetForm = () => {
-    setFoodName('');
-    setQuantity('');
-    setExpiryDate('');
+    setFoodName("");
+    setQuantity("");
+    setExpiryDate("");
     setPhoto(null);
-    setPickupSchedule('');
+    setPickupSchedule("");
     setEditingId(null);
   };
 
   return (
     <div className="inventory-management">
+      <DonorSidebar/>
       <h2>Manage Your Food Inventory</h2>
       <form onSubmit={handleAddFood} className="food-form">
         <input type="text" placeholder="Food Name" value={foodName} onChange={(e) => setFoodName(e.target.value)} required />
@@ -137,12 +162,12 @@ const InventoryManagement = () => {
         <input type="date" value={expiryDate} onChange={(e) => setExpiryDate(e.target.value)} required />
         <input type="file" onChange={(e) => setPhoto(e.target.files[0])} />
         <input type="datetime-local" value={pickupSchedule} onChange={(e) => setPickupSchedule(e.target.value)} required />
-        <button type="submit">{editingId ? 'Update Food' : 'Add Food'}</button>
+        <button type="submit">{editingId ? "Update Food" : "Add Food"}</button>
       </form>
 
       {/* ✅ Display Food Inventory */}
       <div className="food-list">
-        {foodItems.map(item => (
+        {foodItems.map((item) => (
           <div key={item.id} className="food-item">
             <h4>{item.food_name}</h4>
             <p>Quantity: {item.quantity}</p>

@@ -10,6 +10,8 @@ import {
 import { doc, getDoc } from "firebase/firestore";
 import { useNavigate, Link } from "react-router-dom";
 import "../styles/login.css";
+import googleIcon from "../../assets/Google.jpeg"; // Google logo
+import phoneIcon from "../../assets/phone.jpeg"; // Phone login icon
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -18,6 +20,7 @@ const Login = () => {
   const [otp, setOtp] = useState("");
   const [verificationId, setVerificationId] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [showPhoneLogin, setShowPhoneLogin] = useState(false); // Toggle state
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,34 +35,25 @@ const Login = () => {
   const handleEmailLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-  
+
     try {
-      // 1️⃣ Authenticate user
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-  
-      // 2️⃣ Fetch user details from Firestore
+
       const userDoc = await getDoc(doc(db, "users", user.uid));
-  
+
       if (userDoc.exists()) {
         const userData = userDoc.data();
-        
-        // 3️⃣ Store role in localStorage for Role-Based Access
         localStorage.setItem("userRole", userData.role);
-  
-        // 4️⃣ Navigate to the correct dashboard
         navigateDashboard(userData.role);
       } else {
         alert("User not found in Firestore!");
       }
     } catch (error) {
-      console.error("Login Error:", error);
       alert(error.message);
     }
-  
     setLoading(false);
   };
-  
 
   const handleGoogleLogin = async () => {
     setLoading(true);
@@ -87,7 +81,6 @@ const Login = () => {
       const confirmationResult = await signInWithPhoneNumber(auth, phone, window.recaptchaVerifier);
       setVerificationId(confirmationResult.verificationId);
     } catch (error) {
-      console.error("Phone login error:", error);
       alert(error.message);
     }
     setLoading(false);
@@ -132,23 +125,52 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <h2>Login</h2>
-      <form onSubmit={handleEmailLogin}>
-        <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-        <button type="submit" disabled={loading}>Login</button>
-      </form>
+      <div className="login-box">
+        <h2>Login</h2>
+        <form onSubmit={handleEmailLogin}>
+          <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <button className="email-login" type="submit" disabled={loading}>Login</button>
+        </form>
+        <div className="login-options">
+          {/* Google Login */}
+          <button className="google-login" onClick={handleGoogleLogin} disabled={loading}>
+            <img src={googleIcon} alt="Google Logo" />
+          </button>
 
-      <button onClick={handleGoogleLogin} disabled={loading}>Login with Google</button>
+          {/* Phone Login (toggle visibility) */}
+          <button className="phone-login" onClick={() => setShowPhoneLogin(!showPhoneLogin)}>
+            <img src={phoneIcon} alt="Phone Icon" />
+          </button>
+        </div>
 
-      <input type="text" placeholder="Phone Number" value={phone} onChange={(e) => setPhone(e.target.value)} />
-      <button onClick={handlePhoneLogin} disabled={loading}>Send OTP</button>
-      <input type="text" placeholder="Enter OTP" value={otp} onChange={(e) => setOtp(e.target.value)} />
-      <button onClick={handleVerifyOtp} disabled={loading}>Verify OTP</button>
+        {showPhoneLogin && (
+          <div className="phone-login-form">
+            <input
+              type="tel"
+              placeholder="Phone Number"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+            />
+            <button className="otp-login" onClick={handlePhoneLogin} disabled={loading}>
+              Send OTP
+            </button>
 
-      <div id="recaptcha-container"></div>
+            <input
+              type="text"
+              placeholder="Enter OTP"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+            />
+            <button className="otp-login" onClick={handleVerifyOtp} disabled={loading}>
+              Verify OTP
+            </button>
+          </div>
+        )}
+        <div id="recaptcha-container"></div>
 
-      <p><Link to="/register">Don't have an account?</Link></p>
+        <p><Link to="/register">Don't have an account?</Link></p>
+      </div>
     </div>
   );
 };
