@@ -1,0 +1,62 @@
+.delivery-schedule-page {
+    display: flex;
+    background-color: #f8f9fa; /* Light grey background */
+    min-height: 100vh;
+  }
+  
+  .delivery-schedule-content {
+    flex: 1;
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .delivery-schedule-title {
+    color: #28a745; /* Green - represents freshness and sustainability */
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  
+  .loading-text {
+    text-align: center;
+    color: #6c757d; /* Grey - for muted text */
+  }
+  
+  .schedule-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #343a40; /* Dark grey - for readability */
+  }
+  
+  .form-select,
+  .form-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ced4da; /* Light border */
+    border-radius: 0.25rem;
+    font-size: 1rem;
+  }
+  
+  .schedule-button {
+    background-color: #28a745; /* Green - primary button color */
+    color: white;
+    padding: 1rem 1.5rem;
+    border: none;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .schedule-button:hover {
+    background-color: #218838; /* Darker green on hover */
+  }

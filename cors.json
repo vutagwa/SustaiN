@@ -1,0 +1,9 @@
+[
+    {
+      "origin": ["http://localhost:5173", "https://finalyear-7d80d.firbaseapp.com"],
+      "method": ["GET", "POST", "PUT", "DELETE"],
+      "maxAgeSeconds": 3600,
+      "responseHeader": ["Content-Type", "Authorization"]
+    }
+  ]
+  

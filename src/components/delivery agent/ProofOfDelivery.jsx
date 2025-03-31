@@ -1,30 +1,21 @@
-import React, { useState } from "react";
-import { storage, db } from "../essentials/firebase";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { updateDoc, doc } from "firebase/firestore";
+import React from "react";
+import "../styles/sidebar.css";
 
-const ProofOfDelivery = ({ deliveryId }) => {
-  const [image, setImage] = useState(null);
-  
-  const handleUpload = async () => {
-    if (!image) return alert("Please select an image.");
-    
-    const storageRef = ref(storage, `proof_of_delivery/${deliveryId}`);
-    await uploadBytes(storageRef, image);
-    
-    const downloadURL = await getDownloadURL(storageRef);
-    await updateDoc(doc(db, "deliveries", deliveryId), { proofOfDelivery: downloadURL, status: "delivered" });
-
-    alert("Delivery confirmed!");
-  };
-
+const Sidebar = ({ setSelectedSection }) => {
   return (
-    <div>
-      <h3>Proof of Delivery</h3>
-      <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files[0])} />
-      <button onClick={handleUpload}>Upload Proof</button>
-    </div>
+    <nav className="sidebar">
+      <h3>sustaiN!</h3>
+      <ul>
+        <li onClick={() => setSelectedSection("delivery-list")}>📦 Delivery List</li>
+        <li onClick={() => setSelectedSection("proof-of-delivery")}>📷 Proof of Delivery</li>
+        <li onClick={() => setSelectedSection("pickup-schedule")}>📅 Pickup Schedule</li>
+        <li onClick={() => setSelectedSection("faq")}>❓ FAQ</li>
+        <li onClick={() => setSelectedSection("notifications")}>🔔 Notifications</li>
+        <li onClick={() => setSelectedSection("settings")}>⚙️ Settings</li>
+        <li className="logout" onClick={() => alert("Logging out...")}>🚪 Logout</li>
+      </ul>
+    </nav>
   );
 };
 
-export default ProofOfDelivery;
+export default Sidebar;

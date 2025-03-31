@@ -181,6 +181,9 @@ const Register = () => {
 
   return (
     <div className="register-page">
+      <div className="register-image"></div>
+      <div className="register-box">
+
       <h2>Register</h2>
       
       <form onSubmit={handleRegisterWithEmail}>
@@ -189,12 +192,13 @@ const Register = () => {
         <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} required />
         <input type="tel" placeholder="Phone Number" onChange={(e) => setPhoneNumber(e.target.value)} required />
         
-        <select onChange={(e) => setRole(e.target.value)}>
-          <option value="admin">Admin</option>
-          <option value="donor">Donor</option>
-          <option value="recipient">Recipient</option>
-          <option value="agent">Delivery Agent</option>
-        </select>
+        <select onChange={(e) => setRole(e.target.value)} value={role}>
+  <option value="admin">Admin</option>
+  <option value="donor">Donor</option>
+  <option value="recipient">Recipient</option>
+  <option value="agent">Delivery Agent</option>
+</select>
+
 
         <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} required />
         <input type="password" placeholder="Confirm Password" onChange={(e) => setConfirmPassword(e.target.value)} required />
@@ -202,7 +206,6 @@ const Register = () => {
         <button class="email-reg" type="submit" disabled={loading}>
           Register with Email
         </button>
-      </form>
 
       <div className="register-options">
       <button className="google-btn" onClick={handleGoogleSignup}>
@@ -218,6 +221,9 @@ const Register = () => {
       <p>
         <Link to="/">Already have an account? </Link>
       </p>
+      </form>
+
+    </div>
     </div>
   );
 };

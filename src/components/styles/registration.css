@@ -2,7 +2,7 @@
 
 body {
   font-family: 'Poppins', sans-serif;
-  background-color: #0a0a0a; 
+  background-color: #ecebe7; 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -13,27 +13,35 @@ body {
 /* Full-page container */
 .register-page {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background: linear-gradient(135deg, #bff5de, #222222); /* Dark gradient */
-  width: 350px;
-  height: 100vh;
-  padding: 40px;
-  background: #181818;
-  border-radius: 12px;
-  text-align: center;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4);
-
+    width: 131vh;
+    height: 100vh;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    gap: 30px;
+}
+.register-image {
+  flex: 5;
+  background: url("../../assets/register-image.jpeg") no-repeat center center/cover;
 }
 
-
+/* Right Side - Login Form */
+.register-box {
+  flex: 4;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  gap: 30px;
+  background: transparent;
+}
 /* Heading */
 .register-page h2 {
   color: #d3b8b8;
   font-size: 24px;
-  margin-bottom: 20px;
+  margin-bottom: -10px;
 }
 
 /* Input fields */
@@ -42,10 +50,10 @@ body {
   width: 100%;
   padding: 12px;
   margin: 10px 0;
-  background: #252525;
-  border: 1px solid #444;
+  background: transparent;
+  border: 1px solid #4CAF50;
   border-radius: 6px;
-  color: white;
+  color: #a09e9e;
   font-size: 16px;
 }
 
@@ -78,11 +86,12 @@ body {
   gap: 10px;
   margin-bottom: -30px;
   background: transparent;
+  margin-top: -15px;
 }
 
 .google-btn,
 .phone-btn {
-  background: none;
+  background: transparent;
   border: none;
   cursor: pointer;
 }

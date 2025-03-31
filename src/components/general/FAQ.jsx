@@ -44,7 +44,7 @@ const FAQ = () => {
       {/* Close Button */}
       <button className="close-btn" onClick={() => navigate("/")}>X</button>
 
-      <h2>Frequently Asked Questions</h2>
+      <h2>❓ FAQ</h2>
       <div className="faq-section">
         {faqs.length === 0 ? (
           <p>No FAQs available yet.</p>

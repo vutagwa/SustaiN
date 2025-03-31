@@ -43,7 +43,7 @@ const DeliveryDashboard = () => { // remove agentId from props
     <div className="agent-dashboard">
       {/* Sidebar */}
       <nav className="sidebar">
-        <h3>🚚 Agent Menu</h3>
+        <h3>sustaiN!</h3>
         <ul>
           <li onClick={() => setSelectedSection("delivery-list")}>📦 Delivery List</li>
           <li onClick={() => setSelectedSection("proof-of-delivery")}>📷 Proof of Delivery</li>

@@ -4,6 +4,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { auth, db } from "../essentials/firebase";
 import { Link } from "react-router-dom";
 import "../styles/PickupSchedule.css"; // Import CSS file
+import Sidebar from "./Sidebar";
 
 const containerStyle = { width: "100%", height: "300px" };
 const center = { lat: -1.286389, lng: 36.817223 }; // Default: Nairobi
@@ -36,18 +37,7 @@ const PickupSchedule = () => {
   return (
     <div className="pickup-page">
       {/* Sidebar */}
-      <nav className="sidebar">
-        <h2>sustaiN!</h2>
-        <ul>
-          <li><Link to="/recipient/pickups">Pickup Schedule</Link></li>
-          <li><Link to="/recipient/track">Track Received Food</Link></li>
-          <li><Link to="/recipient/feedback">Provide Feedback</Link></li>
-          <li><Link to="/notifications">Notifications</Link></li>
-          <li><Link to="/settings">Settings</Link></li>
-          <li><Link to="/faq">FAQ</Link></li>
-          <li><Link to="/">Logout</Link></li>
-        </ul>
-      </nav>
+      <Sidebar/>
 
       {/* Main Content */}
       <div className="main-content">

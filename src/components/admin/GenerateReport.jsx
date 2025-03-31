@@ -20,6 +20,15 @@ const GenerateReport = () => {
 
     fetchData();
   }, []);
+  const fetchDonationStats = async () => {
+    const snapshot = await getDocs(collection(db, "donations"));
+    const totalDonations = snapshot.size; // Total number of donations
+    const donationData = snapshot.docs.map(doc => doc.data());
+  
+    console.log("Total Donations:", totalDonations);
+    console.log("Donation Details:", donationData);
+  };
+  
 
   const ReportDocument = (
     <Document>

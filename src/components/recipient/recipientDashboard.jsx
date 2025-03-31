@@ -4,17 +4,17 @@ import { db, auth } from "../essentials/firebase";
 import "../styles/recipient.css";
 import Sidebar from "./Sidebar";
 import ChatInterface from "../chat/ChatInterface";
-import chatIcon from "../../assets/chat.jpeg"; // Import chat icon
+import chatIcon from "../../assets/chat.jpeg";
 
 const RecipientDashboard = () => {
-  const [donations, setDonations] = useState([]);
-  const [search, setSearch] = useState("");
-  const [filteredDonations, setFilteredDonations] = useState([]);
   const [foodItems, setFoodItems] = useState([]);
+  const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("");
   const [sortBy, setSortBy] = useState("expiry_date");
   const [user, setUser] = useState(null);
-  const [showChat, setShowChat] = useState(false); // Chat visibility toggle
+  const [showChat, setShowChat] = useState(false);
+  const [selectedDonorId, setSelectedDonorId] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
@@ -26,122 +26,150 @@ const RecipientDashboard = () => {
 
   useEffect(() => {
     const fetchFoodItems = async () => {
-      let q = collection(db, "food_inventory");
+      setLoading(true);
+      try {
+        const foodRef = collection(db, "food_inventory");
+        const q = filter ? query(foodRef, where("foodType", "==", filter)) : foodRef;
+        const querySnapshot = await getDocs(q);
 
-      if (filter) {
-        q = query(q, where("foodType", "==", filter));
+        let sortedItems = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        if (sortBy === "expiry_date") {
+          sortedItems = sortedItems.sort((a, b) =>
+            (a.expiry_date?.seconds || 0) - (b.expiry_date?.seconds || 0)
+          );
+        }
+
+        setFoodItems(sortedItems);
+      } catch (error) {
+        console.error("Error fetching food items:", error);
       }
-
-      const querySnapshot = await getDocs(q);
-      let sortedItems = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-
-      if (sortBy === "expiry_date") {
-        sortedItems = sortedItems.sort((a, b) => new Date(a.expiry_date) - new Date(b.expiry_date));
-      }
-
-      setFoodItems(sortedItems);
+      setLoading(false);
     };
 
     fetchFoodItems();
   }, [filter, sortBy]);
 
-  useEffect(() => {
-    const fetchDonations = async () => {
-      const querySnapshot = await getDocs(collection(db, "food_inventory"));
-      const foodData = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      setDonations(foodData);
-      setFilteredDonations(foodData);
-    };
-
-    fetchDonations();
-  }, []);
-
-  useEffect(() => {
-    const results = donations.filter((donation) =>
-      donation.food_name.toLowerCase().includes(search.toLowerCase())
-    );
-    setFilteredDonations(results);
-  }, [search, donations]);
-
-  const requestFood = async (foodId) => {
+  const requestFood = async (foodId, donorId, foodName) => {
     if (!user) {
       alert("You need to be logged in to request food.");
       return;
     }
 
-    const requestRef = doc(db, "requests", `${foodId}_${user.uid}`);
-    await setDoc(requestRef, {
-      foodId: foodId,
-      recipientId: user.uid,
-      status: "Pending",
-      requestDate: Timestamp.now(),
-    });
+    try {
+      const requestRef = doc(db, "requests", `${foodId}_${user.uid}`);
+      await setDoc(requestRef, {
+        foodId,
+        recipientId: user.uid,
+        donorId,
+        foodName,
+        requestDate: Timestamp.now(),
+        status: "Pending",
+      });
 
-    alert("Food request submitted successfully!");
+      alert("Food request submitted successfully!");
+    } catch (error) {
+      console.error("Error requesting food:", error);
+      alert("Failed to submit food request.");
+    }
+  };
+
+  const claimFood = async (foodId, donorId, foodName, quantity) => {
+    if (!user) {
+      alert("You need to be logged in to claim food.");
+      return;
+    }
+
+    try {
+      const claimRef = doc(db, "claims", `${foodId}_${user.uid}`);
+      await setDoc(claimRef, {
+        foodId,
+        recipientId: user.uid,
+        donorId,
+        foodName,
+        quantity,
+        status: "Claimed",
+        claimDate: Timestamp.now(),
+      });
+
+      alert("Food claimed successfully!");
+    } catch (error) {
+      console.error("Error claiming food:", error);
+      alert("Failed to claim food.");
+    }
   };
 
   return (
     <div className="dashboard-container">
       <Sidebar />
-
       <main className="content">
-        <h3>Available Food Donations</h3>
-        <input
-          type="text"
-          placeholder="Search for food..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="search-bar"
-        />
-
-        <div>
-          <h2>Find Food Donations</h2>
-
-          <select onChange={(e) => setFilter(e.target.value)}>
-            <option value="">All</option>
-            <option value="Vegetables">Vegetables</option>
-            <option value="Fruits">Fruits</option>
-          </select>
-
-          <select onChange={(e) => setSortBy(e.target.value)}>
-            <option value="expiry_date">Sort by Expiry Date</option>
-          </select>
-
-          <div className="food-list">
-            {foodItems.map((food) => (
-              <div key={food.id} className="food-item">
-                <p>
-                  {food.food_name} - {food.quantity}
-                </p>
-                <p>Expires on: {food.expiry_date}</p>
-              </div>
-            ))}
+        <h2 className="dashboard-title">Available Food Donations</h2>
+        <div className="search-filter-container">
+          <input
+            type="text"
+            placeholder="Search for food..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="search-bar"
+          />
+          <div className="filter-sort-container">
+            <select onChange={(e) => setFilter(e.target.value)} className="filter-select">
+              <option value="">All Categories</option>
+              <option value="Vegetables">Vegetables</option>
+              <option value="Fruits">Fruits</option>
+              <option value="Bakery">Bakery</option>
+              <option value="Dairy">Dairy</option>
+              <option value="Meat">Meat</option>
+              <option value="Other">Other</option>
+            </select>
+            <select onChange={(e) => setSortBy(e.target.value)} className="sort-select">
+              <option value="expiry_date">Sort by Expiry Date</option>
+            </select>
           </div>
         </div>
 
-        <div className="donations-list">
-          {filteredDonations.length > 0 ? (
-            filteredDonations.map((donation) => (
-              <div key={donation.id} className="donation-card">
-                <h4>{donation.food_name}</h4>
-                <p>Quantity: {donation.quantity}</p>
-                <p>Pickup: {donation.pickup_schedule}</p>
-                <button onClick={() => requestFood(donation.id)}>Request Food</button>
-              </div>
-            ))
-          ) : (
-            <p>No matching donations found.</p>
-          )}
-        </div>
+        {loading ? (
+          <p className="loading-message">Loading food items...</p>
+        ) : (
+          <div className="food-list">
+            {foodItems
+              .filter((food) => food.food_name.toLowerCase().includes(search.toLowerCase()))
+              .map((food) => (
+                <div key={food.id} className="food-item">
+                  <div className="food-details">
+                    <p className="food-name">{food.food_name}</p>
+                    <p className="food-quantity">Quantity: {food.quantity}</p>
+                    <p className="food-expiry">
+                      Expires on:{" "}
+                      {food.expiry_date?.seconds
+                        ? new Date(food.expiry_date.seconds * 1000).toLocaleDateString()
+                        : "Date not available"}
+                    </p>
+                  </div>
+                  <div className="food-actions">
+                    <button className="claim-button" onClick={() => claimFood(food.id, food.donor_id, food.food_name, food.quantity)}>
+                      Claim
+                    </button>
+                    <button className="request-button" onClick={() => requestFood(food.id, food.donor_id, food.food_name)}>
+                      Request
+                    </button>
+                  </div>
+                </div>
+              ))}
+          </div>
+        )}
       </main>
 
-      {/* Floating Chat Button */}
       <div className="chat-button" onClick={() => setShowChat(!showChat)}>
         <img src={chatIcon} alt="Chat Icon" />
       </div>
 
-      {/* Chat Interface (Only Show When Toggled) */}
-      {showChat && user && <ChatInterface recipientId={user.uid} donorId={"someDonorId"} />}
+      {showChat && user && selectedDonorId && (
+        <ChatInterface recipientId={user.uid} donorId={selectedDonorId} />
+      )}
       {!user && showChat && <p className="login-message">Please log in to access chat.</p>}
     </div>
   );

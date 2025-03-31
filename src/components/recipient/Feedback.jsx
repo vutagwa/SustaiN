@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { collection, addDoc, Timestamp } from "firebase/firestore";
 import { auth, db } from "../essentials/firebase";
 import "../styles/Feedback.css"; // Import CSS file
+import Sidebar from "./Sidebar";
 
 const Feedback = () => {
   const [donorId, setDonorId] = useState("");
@@ -33,18 +34,7 @@ const Feedback = () => {
   return (
     <div className="feedback-page">
       {/* Sidebar Navigation */}
-      <nav className="sidebar">
-        <h2>sustaiN!</h2>
-        <ul>
-          <li><Link to="/recipient/pickups">Pickup Schedule</Link></li>
-          <li><Link to="/recipient/track">Track Received Food</Link></li>
-          <li><Link to="/recipient/feedback">Provide Feedback</Link></li>
-          <li><Link to="/notifications">Notifications</Link></li>
-          <li><Link to="/settings">Settings</Link></li>
-          <li><Link to="/faq">FAQ</Link></li>
-          <li><Link to="/">Logout</Link></li>
-        </ul>
-      </nav>
+      <Sidebar/>
 
       {/* Feedback Form */}
       <div className="feedback-container">

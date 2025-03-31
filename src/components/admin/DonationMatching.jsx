@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import * as tf from "@tensorflow/tfjs";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../essentials/firebase";
 
 const DonationMatching = () => {
@@ -8,38 +7,73 @@ const DonationMatching = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const donationsSnapshot = await getDocs(collection(db, "donations"));
-      const requestsSnapshot = await getDocs(collection(db, "food_requests"));
+      try {
+        // ✅ Fetch food donations (available inventory)
+        const donationsSnapshot = await getDocs(collection(db, "food_inventory"));
+        const requestsSnapshot = await getDocs(collection(db, "food_requests"));
 
-      const donations = donationsSnapshot.docs.map(doc => doc.data());
-      const requests = requestsSnapshot.docs.map(doc => doc.data());
+        const donations = donationsSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        const requests = requestsSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
-      const matchScores = [];
+        const matchScores = [];
 
-      donations.forEach((donation) => {
-        requests.forEach((request) => {
-          const score =
-            (donation.foodType === request.foodType ? 1 : 0) +
-            (donation.quantity >= request.quantity ? 1 : 0) +
-            (request.urgency === "high" ? 1 : 0);
+        // ✅ Match Donations with Requests
+        donations.forEach((donation) => {
+          requests.forEach((request) => {
+            const score =
+              (donation.food_name === request.food_name ? 1 : 0) + // Food type match
+              (donation.quantity >= request.quantity ? 1 : 0) + // Quantity match
+              (request.urgency === "high" ? 1 : 0); // Urgency priority
 
-          if (score > 1) {
-            matchScores.push({ donor: donation.donorId, recipient: request.recipientId, score });
-          }
+            if (score > 1) {
+              matchScores.push({
+                donor: donation.donor_id,
+                recipient: request.recipient_id,
+                food_name: donation.food_name,
+                quantity: request.quantity,
+                score,
+              });
+
+              // ✅ Confirm the match in Firestore
+              confirmMatch(donation.donor_id, request.recipient_id, donation.food_name, request.quantity);
+            }
+          });
         });
-      });
 
-      setMatches(matchScores);
+        setMatches(matchScores);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
 
     fetchData();
   }, []);
 
+  // ✅ Save Match to Firestore
+  const confirmMatch = async (donorId, recipientId, foodName, quantity) => {
+    try {
+      await addDoc(collection(db, "donations"), {
+        donor_id: donorId,
+        recipient_id: recipientId,
+        food_name: foodName,
+        quantity: quantity,
+        status: "matched",
+        timestamp: serverTimestamp(),
+      });
+
+      console.log(`Match confirmed: ${donorId} → ${recipientId}`);
+    } catch (error) {
+      console.error("Error confirming match:", error);
+    }
+  };
+
   return (
     <div>
       <h2>AI-Based Donation Matching</h2>
       {matches.map((match, index) => (
-        <p key={index}>Donor {match.donor} matched with Recipient {match.recipient} (Score: {match.score})</p>
+        <p key={index}>
+          Donor {match.donor} matched with Recipient {match.recipient} (Score: {match.score})
+        </p>
       ))}
     </div>
   );

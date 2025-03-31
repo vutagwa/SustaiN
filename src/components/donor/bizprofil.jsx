@@ -4,6 +4,7 @@ import { db, storage } from "../essentials/firebase";
 import { getDownloadURL, ref, uploadBytes, deleteObject } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import "../styles/profile.css";
+import DonorSidebar from "./DonorSidebar"
 
 const DonorProfile = ({ userId }) => {
   const [profile, setProfile] = useState({

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { db } from "../firebase";
+import { db } from "../essentials/firebase";
 import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
-
+import '../styles/agent.css'
 const DeliveryList = () => {
   const [deliveries, setDeliveries] = useState([]);
 

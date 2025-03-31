@@ -1,123 +1,340 @@
-/* 🌚 Dark UI Theme for Inventory Management */
+.inventory-management-page {
+  display: flex;
+  background-color: #f8f9fa;
+  height: 100vh;
+}
 
-.inventory-management {
-    max-width: 900px;
-    margin: auto;
-    padding: 20px;
-    background-color: #121212;
-    color: #e0e0e0;
-    border-radius: 12px;
-    box-shadow: 0 0 15px rgba(0, 255, 0, 0.1);
-  }
-  
-  h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #00ff57;
-  }
-  
-  /* ✅ Form Styling */
-  .food-form {
+.inventory-content {
+  flex: 1;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.inventory-title {
+  color: #28a745;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.food-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.food-form input,
+.food-form button {
+  padding: 0.75rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+}
+
+.food-form button {
+  background-color: #28a745;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.food-form button:hover {
+  background-color: #218838;
+}
+
+.food-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.food-item {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.food-item h4 {
+  color: #343a40;
+  margin-bottom: 0.5rem;
+}
+
+.food-item p {
+  color: #495057;
+  margin-bottom: 0.5rem;
+}
+
+.food-image {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 1rem;
+  border-radius: 0.25rem;
+}
+
+.food-actions {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.food-actions button {
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.food-actions button:nth-child(1) {
+  background-color: #007bff; /* Blue for Edit */
+  color: white;
+}
+
+.food-actions button:nth-child(1):hover {
+  background-color: #0056b3;
+}
+
+.food-actions button:nth-child(2) {
+  background-color: #dc3545; /* Red for Delete */
+  color: white;
+}
+
+.food-actions button:nth-child(2):hover {
+  background-color: #c82333;
+}
+
+.food-actions button:nth-child(3) {
+  background-color: #ffc107; /* Yellow for Unavailable */
+  color: #212529;
+}
+
+.food-actions button:nth-child(3):hover {
+  .inventory-management-page {
     display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-bottom: 30px;
+    background-color: #f8f9fa;
+    min-height: 100vh;
   }
   
-  .food-form input {
-    background-color: #1e1e1e;
-    color: #e0e0e0;
-    padding: 10px;
-    border: 1px solid #333;
-    border-radius: 8px;
-    outline: none;
-    transition: all 0.2s ease-in-out;
+  .inventory-content {
+    flex: 1;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
   }
   
-  .food-form input:focus {
-    border-color: #00ff57;
+  .inventory-title {
+    color: #28a745;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .food-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .food-form input,
+  .food-form button {
+    padding: 0.75rem;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    font-size: 1rem;
   }
   
   .food-form button {
-    background-color: #00ff57;
-    color: #121212;
-    font-weight: bold;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 8px;
+    background-color: #28a745;
+    color: white;
     cursor: pointer;
-    transition: all 0.2s ease-in-out;
+    transition: background-color 0.3s ease;
   }
   
   .food-form button:hover {
-    background-color: #00cc44;
+    background-color: #218838;
   }
   
-  /* ✅ Food Inventory List */
   .food-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
   }
   
-  /* ✅ Individual Food Item Card */
   .food-item {
-    background-color: #1e1e1e;
-    padding: 15px 20px;
-    border-radius: 10px;
-    border-left: 5px solid #00ff57;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    box-shadow: 0 4px 10px rgba(0, 255, 0, 0.1);
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
   
   .food-item h4 {
-    color: #00ff57;
-    margin-bottom: 8px;
+    color: #343a40;
+    margin-bottom: 0.5rem;
   }
   
   .food-item p {
-    font-size: 14px;
-    opacity: 0.8;
+    color: #495057;
+    margin-bottom: 0.5rem;
   }
   
   .food-image {
-    max-width: 100px;
+    max-width: 100%;
     height: auto;
-    border-radius: 8px;
-    margin-top: 8px;
+    margin-bottom: 1rem;
+    border-radius: 0.25rem;
   }
   
-  button {
-    padding: 8px 12px;
-    margin-right: 8px;
-    background-color: #00ff57;
-    color: #121212;
+  .food-actions {
+    display: flex;
+    justify-content: space-evenly;
+  }
+  
+  .food-actions button {
+    padding: 0.6rem 1rem;
     border: none;
-    border-radius: 6px;
+    border-radius: 0.25rem;
     cursor: pointer;
-    font-size: 14px;
-    transition: all 0.2s ease-in-out;
+    transition: background-color 0.3s ease;
   }
   
-  button:hover {
-    background-color: #00cc44;
+  .food-actions button:nth-child(1) {
+    background-color: #007bff; /* Blue for Edit */
+    color: white;
   }
   
-  button:nth-child(2) {
-    background-color: #ff3333;
+  .food-actions button:nth-child(1):hover {
+    background-color: #0056b3;
   }
   
-  button:nth-child(2):hover {
-    background-color: #cc0000;
+  .food-actions button:nth-child(2) {
+    background-color: #dc3545; /* Red for Delete */
+    color: white;
   }
   
-  /* ✅ Responsive for Mobile */
-  @media (max-width: 768px) {
+  .food-actions button:nth-child(2):hover {
+    background-color: #c82333;
+  }
+  
+  .food-actions button:nth-child(3) {
+    background-color: #ffc107; /* Yellow for Unavailable */
+    color: #212529;
+  }
+  
+  .food-actions button:nth-child(3):hover {
+    .inventory-management-page {
+      display: flex;
+      background-color: #f8f9fa;
+      min-height: 100vh;
+    }
+    
+    .inventory-content {
+      flex: 1;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .inventory-title {
+      color: #28a745;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .food-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .food-form input,
+    .food-form button {
+      padding: 0.75rem;
+      border: 1px solid #ced4da;
+      border-radius: 0.25rem;
+      font-size: 1rem;
+    }
+    
+    .food-form button {
+      background-color: #28a745;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    
+    .food-form button:hover {
+      background-color: #218838;
+    }
+    
+    .food-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    
     .food-item {
-      flex-direction: column;
-      gap: 10px;
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .food-item h4 {
+      color: #343a40;
+      margin-bottom: 0.5rem;
+    }
+    
+    .food-item p {
+      color: #495057;
+      margin-bottom: 0.5rem;
+    }
+    
+    .food-image {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 1rem;
+      border-radius: 0.25rem;
+    }
+    
+    .food-actions {
+      display: flex;
+      justify-content: space-evenly;
+    }
+    
+    .food-actions button {
+      padding: 0.6rem 1rem;
+      border: none;
+      border-radius: 0.25rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    
+    .food-actions button:nth-child(1) {
+      background-color: #007bff; /* Blue for Edit */
+      color: white;
+    }
+    
+    .food-actions button:nth-child(1):hover {
+      background-color: #0056b3;
+    }
+    
+    .food-actions button:nth-child(2) {
+      background-color: #dc3545; /* Red for Delete */
+      color: white;
+    }
+    
+    .food-actions button:nth-child(2):hover {
+      background-color: #c82333;
+    }
+    
+    .food-actions button:nth-child(3) {
+      background-color: #ffc107; /* Yellow for Unavailable */
+      color: #212529;
+    }
+    
+    .food-actions button:nth-child(3):hover {
+      background-color: #ffca2c;
     }
   }
-  
+}

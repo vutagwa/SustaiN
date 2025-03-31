@@ -125,13 +125,14 @@ const Login = () => {
 
   return (
     <div className="login-container">
+      <div className="login-image"></div>
       <div className="login-box">
         <h2>Login</h2>
         <form onSubmit={handleEmailLogin}>
           <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
           <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
           <button className="email-login" type="submit" disabled={loading}>Login</button>
-        </form>
+        
         <div className="login-options">
           {/* Google Login */}
           <button className="google-login" onClick={handleGoogleLogin} disabled={loading}>
@@ -170,6 +171,7 @@ const Login = () => {
         <div id="recaptcha-container"></div>
 
         <p><Link to="/register">Don't have an account?</Link></p>
+        </form>
       </div>
     </div>
   );
